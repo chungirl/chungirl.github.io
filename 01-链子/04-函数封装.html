@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="800" height="600" style="border:1px solid red"></canvas>
+</body>
+<script>
+    //优化：使用函数封装代码，让代码结构看起来更加清晰，同时也更加便于维护
+
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+
+    //设置大圆的参数
+    var bigX=100,bigY=100,bigRadius=50;
+
+    var smallRadius=5;
+    var num=5;
+    var beginRadian=Math.PI/3;
+
+
+    drawChain(bigX,bigY,bigRadius,smallRadius,num,beginRadian);
+    /**
+     * 绘制链子的入口函数
+     */
+    function drawChain(bigX,bigY,bigRadius,smallRadius,num,beginRadian){
+        drawBigCircle(bigX,bigY,bigRadius);
+
+        drawSmallCircles(bigX,bigY,bigRadius,smallRadius,num,beginRadian);
+    }
+
+
+
+
+    //1、绘制大圆
+    function drawBigCircle(bigX,bigY,bigRadius){
+        //绘制大圆
+        ctx.beginPath();
+        ctx.arc(bigX,bigY,bigRadius,0,2*Math.PI);
+        ctx.stroke();
+    }
+
+    //2、绘制单个小圆
+    function drawSmallCircle(bigX,bigY,bigRadius,smallRadius,radian){
+        var h=bigRadius*Math.sin(radian);
+        var b=bigRadius*Math.cos(radian);
+
+        //小圆的圆心坐标
+        var smallX=bigX+b,smallY=bigY+h;
+
+        ctx.beginPath();
+        ctx.arc(smallX,smallY,smallRadius,0,2*Math.PI);
+        ctx.fill();
+    }
+
+    /**
+     * 3、绘制若干个小圆
+     * @param bigX 大圆的圆心x
+     * @param bigY 大圆的圆心y
+     * @param bigRadius 大圆的半径
+     * @param smallRadius 小圆的半径
+     * @param num 小圆的个数
+     * @param beginRadian 第一个小圆位于大圆的弧度
+     */
+    function drawSmallCircles(bigX,bigY,bigRadius,smallRadius,num,beginRadian){
+        //设置小圆的参数
+
+        var singleRadian=2*Math.PI/num;//相邻小圆之间的弧度差
+
+        for (var i = 0; i < num; i++) {
+            drawSmallCircle(bigX,bigY,bigRadius,smallRadius,beginRadian+i*singleRadian);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>
